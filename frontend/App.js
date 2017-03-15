@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import people from '../people.json';
+import key from '../apiKey';
 import styles from './styles.css';
 // import ReactDOM from 'react-dom';
 
@@ -7,7 +7,7 @@ class App extends Component {
 
   constructor() {
     super();
-    console.log(people);
+    // console.log(key);
   }
 
   // componentWillMount() {
@@ -15,23 +15,27 @@ class App extends Component {
   // }
 
 
-  renderPeople() {
-    return (
-      people.map((data, index) =>
-        <ul key={index} className={styles.persons}>
-          <li>{data.firstName}</li>
-          <li>{data.lastName}</li>
-          <li>{data.homeAddress}</li>
-        </ul>,
-      )
-    );
+  renderContact() {
+    fetch(`https://api.fullcontact.com/v2/person.json?apiKey=${key}&email=bart@fullcontact.com`)
+    .then(response => response.json()).then((json) => {
+      console.log(json);
+    });
+    // return (
+      // people.map((data, index) =>
+      //   <ul key={index} className={styles.persons}>
+      //     <li>{data.firstName}</li>
+      //     <li>{data.lastName}</li>
+      //     <li>{data.homeAddress}</li>
+      //   </ul>,
+      // )
+    // );
   }
 
 
   render() {
     return (
       <div>
-        { this.renderPeople() }
+        { this.renderContact() }
       </div>
     );
   }
