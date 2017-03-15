@@ -7,27 +7,36 @@ class App extends Component {
 
   constructor() {
     super();
-    // console.log(key);
+    this.state = {
+      inputValue: '',
+    };
+    this.grabInput = this.grabInput.bind(this);
+    this.renderContact = this.renderContact.bind(this);
   }
 
   // componentWillMount() {
   //   console.log(people);
   // }
 
+  grabInput(event) {
+    // console.log(this.state.inputValue);
+    this.setState({ inputValue: event.target.value });
+  }
 
   renderContact() {
-    fetch(`https://api.fullcontact.com/v2/person.json?apiKey=${key}&email=bart@fullcontact.com`)
+    // console.log(this.state.inputValue);
+
+    fetch(`https://api.fullcontact.com/v2/person.json?apiKey=${key}&email=${this.state.inputValue}`)
     .then(response => response.json()).then((json) => {
       console.log(json);
     });
+
     // return (
-      // people.map((data, index) =>
-      //   <ul key={index} className={styles.persons}>
-      //     <li>{data.firstName}</li>
-      //     <li>{data.lastName}</li>
-      //     <li>{data.homeAddress}</li>
-      //   </ul>,
-      // )
+    //   this.json.map((data, index) =>
+    //     <ul key={index} className={styles.persons}>
+    //       <li>{data.fullName}</li>
+    //     </ul>,
+    //   )
     // );
   }
 
@@ -35,7 +44,10 @@ class App extends Component {
   render() {
     return (
       <div>
-        { this.renderContact() }
+        <form>
+          <input type="text" value={this.state.inputValue} onChange={this.grabInput} />
+        </form>
+        <button type="submit" value="Submit" onClick={this.renderContact} />
       </div>
     );
   }
