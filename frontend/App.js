@@ -9,6 +9,7 @@ class App extends Component {
     super();
     this.state = {
       inputValue: '',
+      dataToRender: null,
     };
     this.grabInput = this.grabInput.bind(this);
     this.renderContact = this.renderContact.bind(this);
@@ -24,22 +25,27 @@ class App extends Component {
   }
 
   renderContact() {
-    // console.log(this.state.inputValue);
-
+      // console.log(this.state.inputValue);
     fetch(`https://api.fullcontact.com/v2/person.json?apiKey=${key}&email=${this.state.inputValue}`)
-    .then(response => response.json()).then((json) => {
-      console.log(json);
-    });
-
-    // return (
-    //   this.json.map((data, index) =>
-    //     <ul key={index} className={styles.persons}>
-    //       <li>{data.fullName}</li>
-    //     </ul>,
-    //   )
-    // );
+      .then(response => response.json())
+      .then(json =>
+        this.setState({ dataToRender: json }),
+      );
   }
 
+  renderItems() {
+    if (this.state.dataToRender !== null) {
+      return (
+        console.log(this.state.dataToRender),
+          this.state.dataToRender.socialProfiles.map((data, index) =>
+            <ul key={index} className={styles.persons}>
+              <li>{data.bio}</li>
+            </ul>,
+        )
+      );
+    }
+    return null;
+  }
 
   render() {
     return (
@@ -48,9 +54,11 @@ class App extends Component {
           <input type="text" value={this.state.inputValue} onChange={this.grabInput} />
         </form>
         <button type="submit" value="Submit" onClick={this.renderContact} />
+        <div>{ this.renderItems() }</div>
       </div>
     );
   }
 }
 
 export default App;
+// bart@fullcontact.com
